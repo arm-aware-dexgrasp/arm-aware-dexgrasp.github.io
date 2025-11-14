@@ -1,8 +1,446 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>Project Page (For Review)</title></head>
-<body>
-<h1>Arm-Aware Guided Dexterous Grasp Generation</h1>
-<p>This page is provided for anonymous peer review.</p>
-</body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Arm-Aware Guided Dexterous Grasp Generation with Arm-Agnostic Grasp Models">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arm-Aware Guided Dexterous Grasp Generation with Arm-Agnostic Grasp Models</title>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/misc.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-fullhd">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Arm-Aware Guided Dexterous Grasp Generation <br />
+                        with Arm-Agnostic Grasp Models </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Anonymous Author(s)
+            </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="is-size-4 publication-authors">
+              <span class="author-block"><b>Submitted to R-AL 2026</b></span>
+            </div>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a target="_blank" href="./AdaptiGraph_RSS24.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+
+              <!-- Arxiv Link. -->
+              <span class="link-block">
+                <a target="_blank" href="https://arm-aware-dexgrasp.github.io/"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file"></i>
+                  </span>
+                  <span>ArXiv (Comming soon)</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a target="_blank" href="docs/Appendix.pdf" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file"></i>
+                  </span>
+                  <span>Appendix</span>
+                </a>
+              </span>
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a target="_blank" href="https://arm-aware-dexgrasp.github.io/"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Comming soon)</span>
+                </a>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered  is-centered">
+          <img src='docs/figs/fig1.jpg' width="60%">
+          </br>
+        </div>
+        <br>
+        <h2 class="subtitle has-text-centered">
+          Due to uncertainty, open-loop execution of imperfect planned grasp poses can cause unintended in-hand object
+          movements or grasp failures.
+          This work proposes a tactile-driven model predictive control approach that <b> coordinates multiple contacts
+          </b> during both approaching and grasping,
+          <b>reducing undesired object movements </b> and enabling adaptive, delicate execution of <b>diverse dexterous
+            grasps</b>.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              While recent research has focused heavily on dexterous grasp pose generation, less attention has been
+              devoted to the
+              execution of planned grasps. Under shape and position uncertainty, open-loop execution often yields
+              uncoordinated
+              contacts, causing undesired in-hand object motion and even grasp failures.
+              To address this, this paper proposes a tactile-driven model predictive controller for adaptive and
+              delicate
+              execution of diverse dexterous grasps.
+              Our approach emphasizes multi-contact coordination across both approaching and grasping phases, with three
+              key
+              novelties: (i) coordination-aware phase separation, (ii) arm-hand coordination to compensate for position
+              errors,
+              and (iii) adaptive force coordination to increase contact forces in a balanced manner.
+              An analytical model is employed to relate contact forces to robot joint motions for predictive control.
+              Our formulation imposes no restrictions on grasp types or contact configurations and integrates seamlessly
+              with
+              state-of-the-art grasp pose generation methods.
+              We validate the approach through large-scale simulations involving 15k grasps across 478 objects on three
+              robotic
+              hands, and real-world experiments on 8 objects. Results demonstrate that our method achieves higher grasp
+              success
+              rates and reduced undesired object movements.
+            </p>
+          </div>
+          <br>
+
+          <h2 class="title is-3">Video</h2>
+          <video id="teaser" muted height="100%" width="100%" controls="controls">
+            <source src="docs/videos/whole_hq.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="content has-text-justified">
+            <p>Overview of our tactile-driven coordinated contact control method for adaptive execution of planned grasp
+              poses generated from observations with uncertainty. Our method employs a coordination-aware separation of
+              the approaching and grasping
+              phases, using the criteria of wrench balance. During the approaching phase, the fingers make contact with
+              the object using gentle forces, while coordinated arm motions compensate for object position errors
+              without
+              deviating from the planned finger configurations. Once sufficient contacts are established, the fingers
+              increase contact forces in a balanced manner to reach the desired total grasp force, during which the
+              desired force of each contact is re-allocated in real time to adapt to changes in contact states.
+            </p>
+          </div>
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-fullwidth">
+              <div class="column is-fullwidth">
+                <img src="docs/figs/overview.jpg" alt="" width="100%">
+              </div>
+            </div>
+          </div>
+          <h3 class="title is-4 has-text-centered">Key Novelties</h3>
+
+          <div class="content has-text-justified" style="margin-top: 20px;">
+            <p>The key contributions and novelties of our approach beyond existing methods include:</p>
+            <ol>
+              <li>
+                <strong>Coordination-Aware Phase Separation:</strong> Unlike conventional methods that treat each finger
+                independently, our approach separates the approaching and grasping phases based on the collective state
+                of
+                all contacts. The transition occurs once sufficient contacts are established to enable non-zero yet
+                balanced forces.
+              </li>
+              <li>
+                <strong>Arm-Hand Coordination during Approaching:</strong> The approaching phase establishes adequate
+                contacts on the object while avoiding large forces. To adapt to the actual object position without
+                excessively deviating from the planned finger configuration, our method enables coordinated arm motions
+                to
+                adjust the global hand pose, contrasting with conventional methods that rely solely on finger motions.
+              </li>
+              <li>
+                <strong>Adaptive Force Coordination during Grasping:</strong> The grasping phase coordinately increases
+                contact forces to firmly grasp the object. Unlike conventional methods that prescribe fixed desired
+                forces
+                for each fingertip, our approach adaptively allocates forces of all contacts online based on measured
+                contact locations and forces, guided by wrench balance criteria.
+              </li>
+            </ol>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="columns is-centered has-text-centered">
+      <div class="container is-max-widescreen">
+
+        <h2 class="title is-3">Simulation Results</h2>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            We validate the approach through large-scale simulations involving 15k grasps across 478 objects on Shadow,
+            Allegro, and Leap Hands.
+          </p>
+        </div>
+
+        <h3 class="title is-4">Evaluation Under Shape Uncertainty</h3>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            Using single-view point clouds as observations of the grasp pose generation network. Some examples achieved
+            using our method.
+          </p>
+        </div>
+        <video id="sim_shape_diverse" autoplay muted playsinline height="70%" width="70%" controls
+          style="display: block; margin: 0 auto; margin-bottom: 40px;">
+          <source src="docs/videos/sim_shape_diverse.mp4" type="video/mp4">
+        </video>
+
+        <div>
+          <p style="text-align: center;">Some examples of comparison with baselines. (Use the left and right buttons to
+            switch between different cases)</p>
+        </div>
+        <div id="sim-shadow-dist0-section"></div>
+        <div id="sim-allegro-dist0-section"></div>
+        <div id="sim-leap_tac3d-dist0-section"></div>
+
+        <h3 class="title is-4" style="margin-top: 40px;">Evaluation Under Position Uncertainty</h3>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            The initial object positions are perturbed by 2 cm along eight uniformly distributed planar directions. Some
+            examples achieved
+            using our method.
+          </p>
+        </div>
+        <video id="sim_pos_diverse" autoplay muted playsinline height="70%" width="70%" controls
+          style="display: block; margin: 0 auto; margin-bottom: 40px;">
+          <source src="docs/videos/sim_pos_diverse.mp4" type="video/mp4">
+        </video>
+
+        <div>
+          <p style="text-align: center;">Some examples of comparison with baselines.</p>
+        </div>
+        <div id="sim-shadow-dist2-section"></div>
+        <div id="sim-allegro-dist2-section"></div>
+        <div id="sim-leap_tac3d-dist2-section"></div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="columns is-centered has-text-centered">
+      <div class="container is-max-widescreen">
+
+        <h2 class="title is-3" style="margin-top: 40px;"> Real-World Experimental Results </h2>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            Real-world experiments are conducted on a UR5 arm and a LEAP Hand. Each fingertip is equipped with a
+            vision-based tactile sensor named Tac3D.
+          </p>
+        </div>
+
+        <h3 class="title is-4" style="margin-top: 40px;">Evaluation Under Shape Uncertainty</h3>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            Using single-view point clouds as observations of the grasp pose generation network. (Use the left and right
+            buttons to switch between different cases)
+          </p>
+        </div>
+        <div id="real-shape-section"></div>
+
+        <h3 class="title is-4" style="margin-top: 40px;">Evaluation Under Position Uncertainty</h3>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            We further conduct experiments under large position errors, using the glass vase and mosquito repellent
+            bottle. The object is displaced by approximately 2 cm from its original position, either towards the thumb
+            or index finger.
+          </p>
+        </div>
+        <div id="real-pos-section"></div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content has-text-centered">
+          <p>
+            Website template borrowed from <a href="https://robopil.github.io/adaptigraph/">AdaptiGraph</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .grid-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    /* 视频之间的间距 */
+    flex-wrap: nowrap;
+    /* 若想小屏换行，改为 wrap */
+    width: 100%;
+  }
+
+  .video-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    /* 每个视频等宽自动分配空间 */
+    max-width: 20%;
+    /* 控制最大宽度，可调大些 */
+  }
+
+  .video-item video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .video-item p {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 16px;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const sections = [
+      { url: "sections/sim_res/shape_uncertainty/shadow.html", id: "sim-shadow-dist0-section", carouselId: "sim-shadow-dist0-results-carousel" },
+      { url: "sections/sim_res/shape_uncertainty/allegro.html", id: "sim-allegro-dist0-section", carouselId: "sim-allegro-dist0-results-carousel" },
+      { url: "sections/sim_res/shape_uncertainty/leap_tac3d.html", id: "sim-leap_tac3d-dist0-section", carouselId: "sim-leap_tac3d-dist0-results-carousel" },
+      { url: "sections/sim_res/pos_uncertainty/shadow.html", id: "sim-shadow-dist2-section", carouselId: "sim-shadow-dist2-results-carousel" },
+      { url: "sections/sim_res/pos_uncertainty/allegro.html", id: "sim-allegro-dist2-section", carouselId: "sim-allegro-dist2-results-carousel" },
+      { url: "sections/sim_res/pos_uncertainty/leap_tac3d.html", id: "sim-leap_tac3d-dist2-section", carouselId: "sim-leap_tac3d-dist2-results-carousel" },
+      { url: "sections/real_res/shape.html", id: "real-shape-section", carouselId: "real-shape-results-carousel" },
+      { url: "sections/real_res/pos.html", id: "real-pos-section", carouselId: "real-pos-results-carousel" },
+    ];
+    Promise.all(
+      sections.map(sec =>
+        fetch(sec.url)
+          .then(res => res.text())
+          .then(html => {
+            document.getElementById(sec.id).innerHTML = html;
+
+            // Initialize this carousel
+            const carousels = bulmaCarousel.attach(`#${sec.carouselId}`, {
+              slidesToScroll: 1,
+              slidesToShow: 1,
+              loop: true,
+              autoplay: false
+            });
+
+            const carousel = carousels[0];
+            const slides = document.querySelectorAll(`#${sec.carouselId} .grid-container`);
+
+            // Video autoplay control
+            slides.forEach((slide, i) => {
+              const vids = slide.querySelectorAll('video');
+              vids.forEach(v => {
+                if (i === 0) v.play();
+                else {
+                  v.pause();
+                  v.currentTime = 0;
+                }
+              });
+            });
+
+            carousel.on('before:show', state => {
+              slides.forEach((slide, i) => {
+                const vids = slide.querySelectorAll('video');
+                vids.forEach(v => {
+                  if (i === state.next) v.play();
+                  else {
+                    v.pause();
+                    v.currentTime = 0;
+                  }
+                });
+              });
+            });
+
+          })
+      )
+    ).catch(err => console.error("Error loading sections:", err));
+  });
+</script>
+
+</body> -->
+
 </html>
