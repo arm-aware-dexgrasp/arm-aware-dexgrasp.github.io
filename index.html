@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Arm-Aware Guided Dexterous Grasp Generation with Arm-Agnostic Grasp Models</title>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
@@ -65,12 +65,11 @@
 
               <!-- Arxiv Link. -->
               <span class="link-block">
-                <a target="_blank" href="https://arm-aware-dexgrasp.github.io/"
-                  class="external-link button is-normal is-rounded is-dark">
+                <a target="_blank" href="docs/Text.pdf" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fas fa-file"></i>
                   </span>
-                  <span>ArXiv (Comming soon)</span>
+                  <span>Paper</span>
                 </a>
               </span>
 
@@ -102,24 +101,22 @@
   </div>
 </section>
 
-<!-- 
+
 
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <div class="container">
-        <div class="columns is-vcentered  is-centered">
-          <img src='docs/figs/fig1.jpg' width="60%">
-          </br>
-        </div>
-        <br>
+          <video id="head" muted preload="metadata" height="90%" width="90%" playsinline autoplay loop >
+            <source src="docs/videos/head.mp4" type="video/mp4">
+          </video>
+
         <h2 class="subtitle has-text-centered">
-          Due to uncertainty, open-loop execution of imperfect planned grasp poses can cause unintended in-hand object
-          movements or grasp failures.
-          This work proposes a tactile-driven model predictive control approach that <b> coordinates multiple contacts
-          </b> during both approaching and grasping,
-          <b>reducing undesired object movements </b> and enabling adaptive, delicate execution of <b>diverse dexterous
-            grasps</b>.
+          Real-world grasp execution requires considering <b>arm-related constraints</b>, 
+          Conventional methods rely on rejection sampling to discard even near-feasible hand poses, leading 
+          to low efficiency. We propose an <b>arm-aware dexterous grasp generation</b> approach that guides the pretrained 
+          arm-agnostic model with arm-related constraints during denoising process, 
+          greatly improving sampling efficiency.
         </h2>
       </div>
     </div>
@@ -136,41 +133,31 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              While recent research has focused heavily on dexterous grasp pose generation, less attention has been
-              devoted to the
-              execution of planned grasps. Under shape and position uncertainty, open-loop execution often yields
-              uncoordinated
-              contacts, causing undesired in-hand object motion and even grasp failures.
-              To address this, this paper proposes a tactile-driven model predictive controller for adaptive and
-              delicate
-              execution of diverse dexterous grasps.
-              Our approach emphasizes multi-contact coordination across both approaching and grasping phases, with three
-              key
-              novelties: (i) coordination-aware phase separation, (ii) arm-hand coordination to compensate for position
-              errors,
-              and (iii) adaptive force coordination to increase contact forces in a balanced manner.
-              An analytical model is employed to relate contact forces to robot joint motions for predictive control.
-              Our formulation imposes no restrictions on grasp types or contact configurations and integrates seamlessly
-              with
-              state-of-the-art grasp pose generation methods.
-              We validate the approach through large-scale simulations involving 15k grasps across 478 objects on three
-              robotic
-              hands, and real-world experiments on 8 objects. Results demonstrate that our method achieves higher grasp
-              success
-              rates and reduced undesired object movements.
+            Dexterous grasp generation that considers arm-related constraints is crucial in real-world scenarios involving arm-environment collision avoidance, 
+            workspace boundary grasps, and consecutive grasping. Existing hand-centric grasp models, which primarily focus on the floating hand’s pose, are insufficient 
+            for such cases. Conventional arm-aware methods either rely on rejection sampling to discard infeasible samples or require retraining on arm-specific data, 
+            leading to low sample efficiency under adverse conditions or limited generalization across different robots and environments. To overcome these limitations, 
+            this letter presents an arm-aware dexterous grasp generation framework that leverages pretrained arm-agnostic grasp models while integrating arm and environmental
+            information only at inference time. Specifically, we formulate arm-aware constrained grasp generation as a joint optimization of hand pose and arm configuration, 
+            and derive closed-form gradients for arm-related constraints. Assuming the hand pose distribution is represented by a diffusion model, we prove that gradient-based 
+            optimization is equivalent to guided diffusion sampling, steering near-feasible samples toward the feasible region. Through comprehensive evaluation involving 10k 
+            objects across 6 scenarios, we demonstrate that the proposed framework generates feasible grasps in highly constrained settings with significantly higher probability, 
+            highlighting its advantages in real-world applications.
             </p>
           </div>
-          <br>
+          <!-- <br> -->
 
           <h2 class="title is-3">Video</h2>
-          <video id="teaser" muted height="100%" width="100%" controls="controls">
-            <source src="docs/videos/whole_hq.mp4" type="video/mp4">
+          <video id="teaser" muted preload="metadata" height="100%" width="100%" controls="controls" playsinline>
+            <source src="docs/videos/RAL25_Vid_compressed.mp4" type="video/mp4">
           </video>
+
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <section class="hero">
   <div class="hero-body">
@@ -180,21 +167,16 @@
 
           <h2 class="title is-3">Method Overview</h2>
           <div class="content has-text-justified">
-            <p>Overview of our tactile-driven coordinated contact control method for adaptive execution of planned grasp
-              poses generated from observations with uncertainty. Our method employs a coordination-aware separation of
-              the approaching and grasping
-              phases, using the criteria of wrench balance. During the approaching phase, the fingers make contact with
-              the object using gentle forces, while coordinated arm motions compensate for object position errors
-              without
-              deviating from the planned finger configurations. Once sufficient contacts are established, the fingers
-              increase contact forces in a balanced manner to reach the desired total grasp force, during which the
-              desired force of each contact is re-allocated in real time to adapt to changes in contact states.
+            <p> Overview of the proposed arm-aware dexterous grasp generation method. Initially, we pretrain an arm-agnostic
+              diffusion model to capture the distribution of wrist poses for floating hands. During sampling, arm kinematics
+              and environment SDF are integrated as constraints, with their gradients guiding the denoising process. This approach
+              significantly enhances the proportion of feasible grasps, adaptable to various arm-hand configurations and constrained environments.
             </p>
           </div>
           <div class="columns is-centered has-text-centered">
             <div class="column is-fullwidth">
               <div class="column is-fullwidth">
-                <img src="docs/figs/overview.jpg" alt="" width="100%">
+                <img src="docs/figs/pipeline.png" alt="" height="110%" width="110%">
               </div>
             </div>
           </div>
@@ -204,25 +186,18 @@
             <p>The key contributions and novelties of our approach beyond existing methods include:</p>
             <ol>
               <li>
-                <strong>Coordination-Aware Phase Separation:</strong> Unlike conventional methods that treat each finger
-                independently, our approach separates the approaching and grasping phases based on the collective state
-                of
-                all contacts. The transition occurs once sufficient contacts are established to enable non-zero yet
-                balanced forces.
+                We formulate arm-aware grasp generation as a joint optimization of grasp pose and arm configuration, 
+                deriving its relation to guided sampling on the pre-trained arm-agnostic grasp diffusion model with added arm constraints.
+              </li> 
+              <li>
+                We derive analytical forms and gradients for three commonly used arm-related constraints (collision avoidance, hand reachability, 
+                and joint proximity) to create the gradient for guidance, addressing the complex mapping between joint-space constraints and Cartesian-space denoising.
               </li>
               <li>
-                <strong>Arm-Hand Coordination during Approaching:</strong> The approaching phase establishes adequate
-                contacts on the object while avoiding large forces. To adapt to the actual object position without
-                excessively deviating from the planned finger configuration, our method enables coordinated arm motions
-                to
-                adjust the global hand pose, contrasting with conventional methods that rely solely on finger motions.
-              </li>
-              <li>
-                <strong>Adaptive Force Coordination during Grasping:</strong> The grasping phase coordinately increases
-                contact forces to firmly grasp the object. Unlike conventional methods that prescribe fixed desired
-                forces
-                for each fingertip, our approach adaptively allocates forces of all contacts online based on measured
-                contact locations and forces, guided by wrench balance criteria.
+                We design comprehensive benchmark scenarios for simulation and real-world evaluation, featuring high obstacle coverage and grasps near arm limits, 
+                which thoroughly verifies that our method generates successful grasps that satisfy constraints with a significantly higher probability than the commonly 
+                used rejection sampling strategy. The proposed approach is applicable to various robotic arms (e.g., UR5 and Franka) and environments, utilizing a single 
+                hand-centric grasp generation model.
               </li>
             </ol>
           </div>
@@ -233,6 +208,7 @@
   </div>
 </section>
 
+<!-- 
 <section class="hero">
   <div class="hero-body">
     <div class="columns is-centered has-text-centered">
