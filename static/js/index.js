@@ -65,7 +65,7 @@ $(document).ready(function() {
         player.currentTime = player.duration / 100 * this.value;
       })
     }, false);*/
-    preloadInterpolationImages();
+    // preloadInterpolationImages();
 
     $('#interpolation-slider').on('input', function(event) {
       setInterpolationImage(this.value);
@@ -76,3 +76,43 @@ $(document).ready(function() {
     bulmaSlider.attach();
 
 })
+
+$(document).ready(function () {
+  const video = document.getElementById("teaser");
+  if (!video) return;
+
+  // 确保静音，减少被拦截概率
+  video.muted = true;
+
+  // 如果浏览器不支持 IntersectionObserver，就直接尝试播放一次
+  if (!("IntersectionObserver" in window)) {
+    video.play().catch(err => {
+      console.log("Autoplay blocked:", err);
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // 进入视窗：尝试播放
+          const p = video.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(err => {
+              console.log("Autoplay blocked:", err);
+            });
+          }
+        } else {
+          // 离开视窗：暂停
+          video.pause();
+        }
+      });
+    },
+    {
+      threshold: 0.4, // 40% 可见时触发
+    }
+  );
+
+  observer.observe(video);
+});
