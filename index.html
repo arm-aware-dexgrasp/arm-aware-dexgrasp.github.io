@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Arm-Aware Guided Dexterous Grasp Generation with Arm-Agnostic Grasp Models">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arm-Aware Guided Dexterous Grasp Generation with Arm-Agnostic Grasp Models</title>
+
+  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/misc.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-fullhd">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Arm-Aware Guided Dexterous Grasp Generation <br />
+                        with Arm-Agnostic Grasp Models </h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Anonymous Author(s)
+            </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="is-size-4 publication-authors">
+              <span class="author-block"><b>Submitted to RA-L 2026</b></span>
+            </div>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a target="_blank" href="./AdaptiGraph_RSS24.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+
+              <!-- Arxiv Link. -->
+              <span class="link-block">
+                <a target="_blank" href="docs/Text.pdf" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a target="_blank" href="docs/Appendix.pdf" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file"></i>
+                  </span>
+                  <span>Appendix</span>
+                </a>
+              </span>
+
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a target="_blank" href="https://arm-aware-dexgrasp.github.io/"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Comming soon)</span>
+                </a>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="container">
+          <video id="head" muted preload="metadata" height="90%" width="90%" playsinline autoplay loop >
+            <source src="docs/videos/head.mp4" type="video/mp4">
+          </video>
+
+        <h2 class="subtitle has-text-centered">
+          Real-world grasp execution requires considering <b>arm-related constraints</b>, 
+          Conventional methods rely on rejection sampling to discard even near-feasible hand poses, leading 
+          to low efficiency. We propose an <b>arm-aware dexterous grasp generation</b> approach that guides the pretrained 
+          arm-agnostic model with arm-related constraints during denoising process, 
+          greatly improving sampling efficiency.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+            Dexterous grasp generation that considers arm-related constraints is crucial in real-world scenarios involving arm-environment collision avoidance, 
+            workspace boundary grasps, and consecutive grasping. Existing hand-centric grasp models, which primarily focus on the floating hand’s pose, are insufficient 
+            for such cases. Conventional arm-aware methods either rely on rejection sampling to discard infeasible samples or require retraining on arm-specific data, 
+            leading to low sample efficiency under adverse conditions or limited generalization across different robots and environments. To overcome these limitations, 
+            this letter presents an arm-aware dexterous grasp generation framework that leverages pretrained arm-agnostic grasp models while integrating arm and environmental
+            information only at inference time. Specifically, we formulate arm-aware constrained grasp generation as a joint optimization of hand pose and arm configuration, 
+            and derive closed-form gradients for arm-related constraints. Assuming the hand pose distribution is represented by a diffusion model, we prove that gradient-based 
+            optimization is equivalent to guided diffusion sampling, steering near-feasible samples toward the feasible region. Through comprehensive evaluation involving 10k 
+            objects across 6 scenarios, we demonstrate that the proposed framework generates feasible grasps in highly constrained settings with significantly higher probability, 
+            highlighting its advantages in real-world applications.
+            </p>
+          </div>
+          <!-- <br> -->
+
+          <h2 class="title is-3">Video</h2>
+          <video id="teaser" muted preload="metadata" height="100%" width="100%" controls="controls" playsinline>
+            <source src="docs/videos/RAL25_Vid_compressed.mp4" type="video/mp4">
+          </video>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="content has-text-justified">
+            <p> Overview of the proposed arm-aware dexterous grasp generation method. Initially, we pretrain an arm-agnostic
+              diffusion model to capture the distribution of wrist poses for floating hands. During sampling, arm kinematics
+              and environment SDF are integrated as constraints, with their gradients guiding the denoising process. This approach
+              significantly enhances the proportion of feasible grasps, adaptable to various arm-hand configurations and constrained environments.
+            </p>
+          </div>
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-fullwidth">
+              <div class="column is-fullwidth">
+                <img src="docs/figs/pipeline.png" alt="" height="110%" width="110%">
+              </div>
+            </div>
+          </div>
+          <h3 class="title is-4 has-text-centered">Key Novelties</h3>
+
+          <div class="content has-text-justified" style="margin-top: 20px;">
+            <p>The key contributions and novelties of our approach beyond existing methods include:</p>
+            <ol>
+              <li>
+                We formulate arm-aware grasp generation as a joint optimization of grasp pose and arm configuration, 
+                deriving its relation to guided sampling on the pre-trained arm-agnostic grasp diffusion model with added arm constraints.
+              </li> 
+              <li>
+                We derive analytical forms and gradients for three commonly used arm-related constraints (collision avoidance, hand reachability, 
+                and joint proximity) to create the gradient for guidance, addressing the complex mapping between joint-space constraints and Cartesian-space denoising.
+              </li>
+              <li>
+                We design comprehensive benchmark scenarios for simulation and real-world evaluation, featuring high obstacle coverage and grasps near arm limits, 
+                which thoroughly verifies that our method generates successful grasps that satisfy constraints with a significantly higher probability than the commonly 
+                used rejection sampling strategy. The proposed approach is applicable to various robotic arms (e.g., UR5 and Franka) and environments, utilizing a single 
+                hand-centric grasp generation model.
+              </li>
+            </ol>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="columns is-centered has-text-centered">
+      <div class="container is-max-widescreen">
+
+        <h2 class="title is-3" style="margin-top: 40px;"> Real-World Experimental Results </h2>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            Real-world experiments are conducted on a UR5 arm and a LEAP Hand. An Azure Kinect depth camera
+            captures the object’s partial point cloud. 
+          </p>
+        </div>
+
+        <h3 class="title is-4" style="margin-top: 40px;">Evaluation in Confined Environments</h3>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+              We evaluate grasp generation in real confined environments by testing eight everyday objects across two challenging setups—the Corridor and Shelf scenes. For each object, we sample 40 candidate grasps and execute the top 10 arm-feasible ones with the highest predicted success.
+          </p>
+        </div>
+              
+        <h4 class="title is-4" style="text-align:center;">Corridor Scene</h4>
+        <!-- corridor 物体按钮 -->
+        <div id="corridor-buttons" class="object-toggle-group" style="text-align:center; margin-bottom: 1rem;">
+          <button class="object-button active" data-section-id="corridor-banana-section">Banana</button>
+          <button class="object-button" data-section-id="corridor-blue_box-section">Blue box</button>
+          <button class="object-button" data-section-id="corridor-cheezit-section">Cheezit</button>
+          <button class="object-button" data-section-id="corridor-mustard-section">Mustard</button>
+          <button class="object-button" data-section-id="corridor-nai_long-section">Nai long</button>
+          <button class="object-button" data-section-id="corridor-red_apple-section">Red apple</button>
+          <button class="object-button" data-section-id="corridor-tea_can-section">Tea can</button>
+          <button class="object-button" data-section-id="corridor-white_tape-section">White tape</button>
+        </div>
+
+        <!-- corridor 内容区 -->
+        <div id="corridor-sections">
+          <div id="corridor-banana-section" class="object-section"></div>
+          <div id="corridor-blue_box-section" class="object-section"></div>
+          <div id="corridor-cheezit-section" class="object-section"></div>
+          <div id="corridor-mustard-section" class="object-section"></div>
+          <div id="corridor-nai_long-section" class="object-section"></div>
+          <div id="corridor-red_apple-section" class="object-section"></div>
+          <div id="corridor-tea_can-section" class="object-section"></div>
+          <div id="corridor-white_tape-section" class="object-section"></div>
+        </div>
+
+        <h4 class="title is-4" style="text-align:center;">Shelf Scene</h4>
+
+        <!-- shelf 物体按钮 -->
+        <div id="shelf-buttons" class="object-toggle-group" style="text-align:center; margin-bottom: 1rem;">
+          <button class="object-button active" data-section-id="shelf-banana-section">Banana</button>
+          <button class="object-button" data-section-id="shelf-blue_box-section">Blue box</button>
+          <button class="object-button" data-section-id="shelf-cheezit-section">Cheezit</button>
+          <button class="object-button" data-section-id="shelf-mustard-section">Mustard</button>
+          <button class="object-button" data-section-id="shelf-nai_long-section">Nai long</button>
+          <button class="object-button" data-section-id="shelf-red_apple-section">Red apple</button>
+          <button class="object-button" data-section-id="shelf-tea_can-section">Tea can</button>
+          <button class="object-button" data-section-id="shelf-white_tape-section">White tape</button>
+        </div>
+
+        <!-- shelf 内容区 -->
+        <div id="shelf-sections">
+          <div id="shelf-banana-section" class="object-section"></div>
+          <div id="shelf-blue_box-section" class="object-section"></div>
+          <div id="shelf-cheezit-section" class="object-section"></div>
+          <div id="shelf-mustard-section" class="object-section"></div>
+          <div id="shelf-nai_long-section" class="object-section"></div>
+          <div id="shelf-red_apple-section" class="object-section"></div>
+          <div id="shelf-tea_can-section" class="object-section"></div>
+          <div id="shelf-white_tape-section" class="object-section"></div>
+        </div>
+
+        <div id="real-shape-section"></div>
+
+        <h3 class="title is-4" style="margin-top: 40px;">Evaluation Near Workspace Boundaries</h3>
+        <div class="content has-text-justified">
+          <p style="text-align: center;">
+            We showcase the effectiveness of the proposed method in generating reachable grasps near the arm’s workspace boundary. A generated grasp is executed both with
+          and without guidance.
+          </p>
+        </div>
+          <video id="reach" muted preload="metadata" height="85%" width="85%" muted loop playsinline controls autoplay>
+          <source src="docs/videos/reach.mp4" type="video/mp4">
+        </video>
+        <div id="real-pos-section"></div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<style>
+    .carousel .slider,
+    .carousel .slider-container {
+      overflow: hidden;
+    }
+      .object-section {
+      display: none;
+    }
+
+    .object-section.active {
+      display: block;
+    }
+
+    /* 上方那一排按钮的布局 */
+    .object-toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    /* 单个按钮的基础样式：圆角 pill */
+    .object-button {
+      border-radius: 999px;
+      border: 1px solid #ccc;
+      background-color: #ffffff;
+      padding: 0.35rem 1.4rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      outline: none;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .object-button:hover {
+      border-color: #888;
+    }
+
+    /* 选中状态（灰底白字，类似你截图） */
+    .object-button.active {
+      background-color: #555;
+      color: #ffffff;
+      border-color: #555;
+    }
+
+    /* 每页 3~4 个视频的网格布局（和之前一样） */
+    .video-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .video-item {
+      text-align: center;
+    }
+
+    .video-item video {
+      max-width: 240px;
+    }
+
+    /* 让每个物体的 carousel 不占满全屏，而是居中一块 */
+    .object-section .carousel {
+      max-width: 1080px;      /* 根据你的视频宽度调，比如 900 / 960 / 1100 均可 */
+      margin: 0 auto 2rem;   /* 水平居中，并在底部留一点空隙 */
+    }
+
+    /* 调整左右箭头相对于 carousel 居中对齐（可选，通常 Bulma 已经是垂直居中的） */
+    .object-section .carousel .slider-navigation-previous,
+    .object-section .carousel .slider-navigation-next {
+      top: 50%;
+      transform: translateY(-30%);
+    }
+    /* 一行 4 个视频，保证布局紧凑 */
+
+    /* .video-item {
+      flex: 0 0 calc(25% - 0.5rem);
+      max-width: calc(25% - 0.5rem);
+      text-align: center;
+    } */
+
+    /* 裁剪容器：决定最终显示的宽高比 */
+    .video-crop-wrapper {
+      width: 100%;
+      /* 这里定宽高比，比原视频更“瘦”，这样会裁左右 */
+      aspect-ratio: 1;          /* 可以试 5/4、3/2，效果略有不同 */
+      overflow: hidden;
+    }
+
+    /* 视频本体：填满 wrapper，并只显示中间区域 */
+    .cropped-video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+
+      /* 水平只显示中间部分，等效于裁掉左右约 1/5 */
+
+    }
+
+    
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sections = [
+    {
+      name: "banana",
+      url: "sections/corridor/banana.html",
+      id: "corridor-banana-section",
+      carouselId: "corridor-banana-carousel"
+    },
+    {
+      name: "blue_box",
+      url: "sections/corridor/blue_box.html",
+      id: "corridor-blue_box-section",
+      carouselId: "corridor-blue_box-carousel"
+    },
+    {
+      name: "cheezit",
+      url: "sections/corridor/cheezit.html",
+      id: "corridor-cheezit-section",
+      carouselId: "corridor-cheezit-carousel"
+    },
+    {
+      name: "mustard",
+      url: "sections/corridor/mustard.html",
+      id: "corridor-mustard-section",
+      carouselId: "corridor-mustard-carousel"
+    },
+    {
+      name: "nai_long",
+      url: "sections/corridor/nai_long.html",
+      id: "corridor-nai_long-section",
+      carouselId: "corridor-nai_long-carousel"
+    },
+    {
+      name: "red_apple",
+      url: "sections/corridor/red_apple.html",
+      id: "corridor-red_apple-section",
+      carouselId: "corridor-red_apple-carousel"
+    },
+    {
+      name: "tea_can",
+      url: "sections/corridor/tea_can.html",
+      id: "corridor-tea_can-section",
+      carouselId: "corridor-tea_can-carousel"
+    },
+    {
+      name: "white_tape",
+      url: "sections/corridor/white_tape.html",
+      id: "corridor-white_tape-section",
+      carouselId: "corridor-white_tape-carousel"
+    },
+  ];
+
+  const initialized = {};
+
+  // 1. 只加载 HTML
+  const loadPromises = sections.map(sec =>
+    fetch(sec.url)
+      .then(res => {
+        console.log("[FETCH]", sec.name, res.status);
+        return res.text();
+      })
+      .then(html => {
+        const container = document.getElementById(sec.id);
+        if (!container) {
+          console.warn("[LOAD] 找不到容器", sec.id);
+          return;
+        }
+        container.innerHTML = html;
+        console.log("[LOAD] 填充完成", sec.id);
+      })
+      .catch(err => console.error("[LOAD ERROR]", sec.name, err))
+  );
+
+  function initCarouselIfNeeded(sectionId) {
+    if (initialized[sectionId]) return;
+
+    const cfg = sections.find(s => s.id === sectionId);
+    if (!cfg) {
+      console.warn("[INIT] 找不到配置", sectionId);
+      return;
+    }
+
+    console.log("[INIT] 初始化 carousel", cfg.name, cfg.carouselId);
+
+    const carousels = bulmaCarousel.attach(`#${cfg.carouselId}`, {
+      slidesToScroll: 1,
+      slidesToShow: 1,
+      loop: true,
+      autoplay: false,
+    });
+
+    if (!carousels || !carousels.length) {
+      console.warn("[INIT] bulmaCarousel.attach 返回空数组", cfg.carouselId);
+      return;
+    }
+
+    const carousel = carousels[0];
+    const slides = document.querySelectorAll(`#${cfg.carouselId} .grid-container`);
+    console.log("[INIT] slide 数量 =", slides.length, "for", cfg.name);
+
+    // 初始化时：只播放第 0 页中的视频
+    slides.forEach((slide, i) => {
+      const vids = slide.querySelectorAll("video");
+      vids.forEach(v => {
+        if (i === 0) {
+          v.currentTime = 0;
+          // 静音 + 自动播放，浏览器策略是允许的
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+          v.currentTime = 0;
+        }
+      });
+    });
+
+    // 轮播切换时：只播放当前页中的视频，其他页暂停并归零
+    carousel.on("before:show", state => {
+      slides.forEach((slide, i) => {
+        const vids = slide.querySelectorAll("video");
+        vids.forEach(v => {
+          if (i === state.next) {
+            v.currentTime = 0;
+            v.play().catch(() => {});
+          } else {
+            v.pause();
+            v.currentTime = 0;
+          }
+        });
+      });
+    });
+
+
+    initialized[sectionId] = true;
+  }
+
+  Promise.all(loadPromises).then(() => {
+    const buttons = document.querySelectorAll("#corridor-buttons .object-button");
+    const allSections = document.querySelectorAll("#corridor-sections .object-section");
+
+    function showSection(sectionId) {
+      console.log("[SHOW]", sectionId);
+      allSections.forEach(secDiv => {
+        if (secDiv.id === sectionId) secDiv.classList.add("active");
+        else secDiv.classList.remove("active");
+      });
+      initCarouselIfNeeded(sectionId);
+    }
+
+    function setActiveButton(activeBtn) {
+      buttons.forEach(btn => {
+        if (btn === activeBtn) btn.classList.add("active");
+        else btn.classList.remove("active");
+      });
+    }
+
+    const defaultBtn =
+      document.querySelector("#corridor-buttons .object-button.active") || buttons[0];
+    if (defaultBtn) {
+      const sectionId = defaultBtn.dataset.sectionId;
+      showSection(sectionId);
+      setActiveButton(defaultBtn);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const sectionId = btn.dataset.sectionId;
+        showSection(sectionId);
+        setActiveButton(btn);
+      });
+    });
+  });
+});
+</script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sections = [
+    {
+      name: "banana",
+      url: "sections/shelf/banana.html",
+      id: "shelf-banana-section",
+      carouselId: "shelf-banana-carousel"
+    },
+    {
+      name: "blue_box",
+      url: "sections/shelf/blue_box.html",
+      id: "shelf-blue_box-section",
+      carouselId: "shelf-blue_box-carousel"
+    },
+    {
+      name: "cheezit",
+      url: "sections/shelf/cheezit.html",
+      id: "shelf-cheezit-section",
+      carouselId: "shelf-cheezit-carousel"
+    },
+    {
+      name: "mustard",
+      url: "sections/shelf/mustard.html",
+      id: "shelf-mustard-section",
+      carouselId: "shelf-mustard-carousel"
+    },
+    {
+      name: "nai_long",
+      url: "sections/shelf/nai_long.html",
+      id: "shelf-nai_long-section",
+      carouselId: "shelf-nai_long-carousel"
+    },
+    {
+      name: "red_apple",
+      url: "sections/shelf/red_apple.html",
+      id: "shelf-red_apple-section",
+      carouselId: "shelf-red_apple-carousel"
+    },
+    {
+      name: "tea_can",
+      url: "sections/shelf/tea_can.html",
+      id: "shelf-tea_can-section",
+      carouselId: "shelf-tea_can-carousel"
+    },
+    {
+      name: "white_tape",
+      url: "sections/shelf/white_tape.html",
+      id: "shelf-white_tape-section",
+      carouselId: "shelf-white_tape-carousel"
+    },
+  ];
+
+  const initialized = {};
+
+  // 1. 只加载 HTML
+  const loadPromises = sections.map(sec =>
+    fetch(sec.url)
+      .then(res => {
+        console.log("[FETCH]", sec.name, res.status);
+        return res.text();
+      })
+      .then(html => {
+        const container = document.getElementById(sec.id);
+        if (!container) {
+          console.warn("[LOAD] 找不到容器", sec.id);
+          return;
+        }
+        container.innerHTML = html;
+        console.log("[LOAD] 填充完成", sec.id);
+      })
+      .catch(err => console.error("[LOAD ERROR]", sec.name, err))
+  );
+
+  function initCarouselIfNeeded(sectionId) {
+    if (initialized[sectionId]) return;
+
+    const cfg = sections.find(s => s.id === sectionId);
+    if (!cfg) {
+      console.warn("[INIT] 找不到配置", sectionId);
+      return;
+    }
+
+    console.log("[INIT] 初始化 carousel", cfg.name, cfg.carouselId);
+
+    const carousels = bulmaCarousel.attach(`#${cfg.carouselId}`, {
+      slidesToScroll: 1,
+      slidesToShow: 1,
+      loop: true,
+      autoplay: false,
+    });
+
+    if (!carousels || !carousels.length) {
+      console.warn("[INIT] bulmaCarousel.attach 返回空数组", cfg.carouselId);
+      return;
+    }
+
+    const carousel = carousels[0];
+    const slides = document.querySelectorAll(`#${cfg.carouselId} .grid-container`);
+    console.log("[INIT] slide 数量 =", slides.length, "for", cfg.name);
+
+    // 初始化时：只播放第 0 页中的视频
+    slides.forEach((slide, i) => {
+      const vids = slide.querySelectorAll("video");
+      vids.forEach(v => {
+        if (i === 0) {
+          v.currentTime = 0;
+          // 静音 + 自动播放，浏览器策略是允许的
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+          v.currentTime = 0;
+        }
+      });
+    });
+
+    // 轮播切换时：只播放当前页中的视频，其他页暂停并归零
+    carousel.on("before:show", state => {
+      slides.forEach((slide, i) => {
+        const vids = slide.querySelectorAll("video");
+        vids.forEach(v => {
+          if (i === state.next) {
+            v.currentTime = 0;
+            v.play().catch(() => {});
+          } else {
+            v.pause();
+            v.currentTime = 0;
+          }
+        });
+      });
+    });
+
+
+    initialized[sectionId] = true;
+  }
+
+  Promise.all(loadPromises).then(() => {
+    const buttons = document.querySelectorAll("#shelf-buttons .object-button");
+    const allSections = document.querySelectorAll("#shelf-sections .object-section");
+
+    function showSection(sectionId) {
+      console.log("[SHOW]", sectionId);
+      allSections.forEach(secDiv => {
+        if (secDiv.id === sectionId) secDiv.classList.add("active");
+        else secDiv.classList.remove("active");
+      });
+      initCarouselIfNeeded(sectionId);
+    }
+
+    function setActiveButton(activeBtn) {
+      buttons.forEach(btn => {
+        if (btn === activeBtn) btn.classList.add("active");
+        else btn.classList.remove("active");
+      });
+    }
+
+    const defaultBtn =
+      document.querySelector("#shelf-buttons .object-button.active") || buttons[0];
+    if (defaultBtn) {
+      const sectionId = defaultBtn.dataset.sectionId;
+      showSection(sectionId);
+      setActiveButton(defaultBtn);
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const sectionId = btn.dataset.sectionId;
+        showSection(sectionId);
+        setActiveButton(btn);
+      });
+    });
+  });
+});
+</script>
+
+</body> 
+
+</html>
